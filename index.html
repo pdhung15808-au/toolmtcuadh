@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghi Chú & Máy Tính Cá Nhân</title>
+    <style>
+        body { font-family: Sans-serif, sans-serif; background-color: #f0f5f5; display: flex; justify-content: center; gap: 30px; padding: 40px; margin: 0; flex-wrap: wrap; }
+        .box { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 320px; }
+        h2 { margin-top: 0; color: #333; text-align: center; }
+        /* Style cho phần Ghi chú */
+        textarea { width: 93%; height: 200px; padding: 10px; border: 1px solid #ccc; border-radius: 6px; resize: none; font-size: 16px; }
+        /* Style cho phần Máy tính */
+        #calc-screen { width: 93%; height: 50px; text-align: right; margin-bottom: 15px; font-size: 24px; padding: 5px; border: 1px solid #ccc; border-radius: 6px; background: #fafafa; }
+        .buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        button { padding: 15px; font-size: 18px; font-weight: bold; border: none; background: #e4e6eb; border-radius: 6px; cursor: pointer; }
+        button:active { background: #d8dadf; }
+        button.operator { background: #ff9500; color: white; }
+        button.clear { background: #ff3b30; color: white; }
+    </style>
+</head>
+<body>
+
+    <!-- PHẦN GHI CHÚ -->
+    <div class="box">
+        <h2>📝 Ghi chú nhanh gọn lẹ</h2>
+        <textarea id="note-area" placeholder="Nhập ghi chú vào đây... Tự động lưu khi bạn thoát trang!"></textarea>
+    </div>
+
+    <!-- PHẦN MÁY TÍNH -->
+    <div class="box">
+        <h2> Máy tính</h2>
+        <input type="text" id="calc-screen" readonly placeholder="0">
+        <div class="buttons">
+            <button class="clear" onclick="clearScreen()">C</button>
+            <button onclick="press('/')" class="operator">/</button>
+            <button onclick="press('*')" class="operator">x</button>
+            <button onclick="press('-')" class="operator">-</button>
+            <button onclick="press('7')">7</button>
+            <button onclick="press('8')">8</button>
+            <button onclick="press('9')">9</button>
+            <button onclick="press('+')" class="operator">+</button>
+            <button onclick="press('4')">4</button>
+            <button onclick="press('5')">5</button>
+            <button onclick="press('6')">6</button>
+            <button onclick="calculate()" class="operator" style="grid-row: span 2; height: 100%;">=</button>
+            <button onclick="press('1')">1</button>
+            <button onclick="press('2')">2</button>
+            <button onclick="press('3')">3</button>
+            <button onclick="press('0')" style="grid-column: span 2;">0</button>
+            <button onclick="press('.')">.</button>
+        </div>
+    </div>
+
+    <script>
+        // Xử lý logic Ghi Chú (Tự động lưu vào bộ nhớ trình duyệt)
+        const noteArea = document.getElementById('note-area');
+        noteArea.value = localStorage.getItem('myNote') || '';
+        noteArea.addEventListener('input', () => {
+            localStorage.setItem('myNote', noteArea.value);
+        });
+
+        // Xử lý logic Máy Tính
+        const screen = document.getElementById('calc-screen');
+        function press(val) { screen.value += val; }
+        function clearScreen() { screen.value = ''; }
+        function calculate() {
+            try {
+                screen.value = eval(screen.value) || 0;
+            } catch (err) {
+                screen.value = 'Lỗi';
+            }
+        }
+    </script>
+</body>
+</html>
